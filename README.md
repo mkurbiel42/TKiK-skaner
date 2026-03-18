@@ -6,7 +6,7 @@ Skaner tokenów dla prostych wyrażeń matematycznych napisany w Python
 
 `uv run main.py`
 
-Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje wszystkie tokeny w formacie "[KOD]: [WARTOŚĆ]"
+Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje wszystkie tokeny w formacie `"[KOD]: [WARTOŚĆ]"`
 
 ## Tokeny
 
