@@ -2,13 +2,15 @@
 
 Skaner tokenów dla prostych wyrażeń matematycznych napisany w Python
 
-To run the project use uv
+Żeby uruchomić program należy użyć uv
 
 `uv run main.py`
 
+Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje wszystkie tokeny w formacie "[KOD]: [WARTOŚĆ]"
+
 ## Tokeny
 
-| **Nazwa**     | **Wyrażenie regularne** | **Opis**                                                                                        |
+| **Kod**     | **Wyrażenie regularne** | **Opis**                                                                                        |
 |---------------|-------------------------|-------------------------------------------------------------------------------------------------|
 | INTEGER       | "[0-9]+"                | Liczba całkowita dodatnia, składająca się z samych cyfr                                         |
 | ID            | "[a-zA-Z][a-zA-Z0-9]*"   | Identyfikator składający się z jednej litery na początku a następnie ze znaków alfanumerycznych |
