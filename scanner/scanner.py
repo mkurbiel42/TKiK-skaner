@@ -14,13 +14,16 @@ tokenValidators: dict[TokenType, Callable[[str], bool]] = {
     TokenType.EMPTY: lambda lit: len(lit) == 0
 }
 
-def scan(toScan: str):
+def scan(toScan: str, fullyIgnoreWhitespace: bool = False):
     i: int = 0
     currentTokenLiteral: str = ""
     tokens: List[Token] = [] 
 
     while i < len(toScan):
-        if toScan[i] == " ":
+        if toScan[i].isspace():
+            if fullyIgnoreWhitespace and i!=len(toScan)-1:
+                i += 1
+                continue
             currentToken = parseToken(currentTokenLiteral)
             if isValidToken(currentToken):
                 tokens.append(currentToken)
