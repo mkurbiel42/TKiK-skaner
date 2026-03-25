@@ -14,7 +14,7 @@ tokenValidators: dict[TokenType, Callable[[str], bool]] = {
     TokenType.EMPTY: lambda lit: len(lit) == 0
 }
 
-def scan(toScan: str, fullyIgnoreWhitespace: bool = False):
+def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = True) -> List[Token]:
     i: int = 0
     currentTokenLiteral: str = ""
     tokens: List[Token] = [] 
@@ -56,7 +56,8 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False):
             case _:
                 print("Something horrible happened")
 
-    print("\n".join([str(t) for t in tokens]))
+    if printTokens: print("\n".join([str(t) for t in tokens]))
+    return tokens
         
 
 def getNextChar(char: str, currentTokenLiteral: str) -> ScanResponse:
