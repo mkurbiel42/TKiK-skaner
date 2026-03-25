@@ -4,9 +4,9 @@ from typing import List
 def colorizeTokens(tokens: List[Token], outputFileName: str):
     outStr = '<p style="font-family:arial;">'
     braketColors = [
+        "#ff00d4",
         "#ff0000",
-        "#ffa500",
-        "#f2ec38"
+        "#ffa500"
     ]
     bracketDepth = -1
     for token in tokens:
