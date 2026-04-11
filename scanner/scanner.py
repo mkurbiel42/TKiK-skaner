@@ -18,7 +18,7 @@ languageTokenValidators: dict[LanguageTokenType, Callable[[str], bool]] = {
     LanguageTokenType.INTEGER: lambda lit: lit.isnumeric(),
     LanguageTokenType.STRING: lambda lit: len(lit) >= 2 and lit[0] == '"' and lit[-1] == '"',
     LanguageTokenType.STRING_INCOMPLETE: lambda lit: len(lit) > 0 and lit[0] == '"' and '"' not in lit[1:],
-    LanguageTokenType.CHAR: lambda lit: len(lit) >= 2 and lit[0] == "'" and lit[-1] == "'",
+    LanguageTokenType.CHAR: lambda lit: len(lit) == 3 and lit[0] == "'" and lit[-1] == "'",
     LanguageTokenType.CHAR_INCOMPLETE: lambda lit: len(lit) > 0 and lit[0] == "'" and "'" not in lit[1:],
     LanguageTokenType.PLUS: lambda lit: lit == "+",
     LanguageTokenType.MINUS: lambda lit: lit == "-",
