@@ -4,10 +4,18 @@ from scanner.scan_response import ScanResponse, ScanResponseType
 from scanner.token import Token
 from typing import List
 
-print("Input the expression you want to scan: ")
-toScan: str = input()
+scType = input("Wybierz rodzaj skanera: 1 - wyrażenie matematyczne, 2 - własny język: ")
 
-tokens: List[Token] = scan(toScan)
+toScan: str
+if scType == "1":
+    print("Podaj wyrażenie do zeskanowania: ")
+    toScan: str = input()
+elif scType == "2":
+    print("Podaj nazwę pliku do zeskanowania: ")
+    with open(input(), 'r') as f:
+        toScan: str = f.read()
+
+tokens: List[Token] = scan(toScan, fullLanguage=True)
 
 print("Podaj nazwę pliku do zapisania:")
 outFileName: str = input()
