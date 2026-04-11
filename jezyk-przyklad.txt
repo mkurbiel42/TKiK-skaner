@@ -15,8 +15,8 @@ if (!isalpha(c)){
     print("Error! Non-alphabetic character.");
 }
 else if (isLowercaseVowel || isUppercaseVowel){
-    cout << c << " is a vowel.";
+    print(c, " is a vowel.");
 }
 else{
-    cout << c << " is a consonant.";
+    print(c, " is a consonant.");
 }
