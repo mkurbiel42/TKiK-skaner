@@ -67,15 +67,15 @@ def colorizeTokens(tokens: List[Token], outputFileName: str):
                 LanguageTokenType.AND,
                 LanguageTokenType.NEGATE
             ] else
-            braketColors[bracketDepth] if token.type in [
+            braketColors[bracketDepth % len(braketColors)] if token.type in [
                 LanguageTokenType.RIGHT_BRACKET,
                 LanguageTokenType.LEFT_BRACKET
             ] else
-            braketColors[squareBracketDepth] if token.type in [
+            braketColors[squareBracketDepth % len(braketColors)] if token.type in [
                 LanguageTokenType.RIGHT_SQUARE_BRACKET,
                 LanguageTokenType.LEFT_SQUARE_BRACKET
             ] else
-            braketColors[braceDepth] if token.type in [
+            braketColors[braceDepth % len(braketColors)] if token.type in [
                 LanguageTokenType.RIGHT_BRACE,
                 LanguageTokenType.LEFT_BRACE
             ] else
