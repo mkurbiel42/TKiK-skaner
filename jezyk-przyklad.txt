@@ -12,11 +12,11 @@ isUppercaseVowel = (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
 
 // show error message if c is not an alphabet
 if (!isalpha(c)){
-    print("Error! Non-alphabetic character.");
+	print("Error! Non-alphabetic character.");
 }
 else if (isLowercaseVowel || isUppercaseVowel){
-    print(c, " is a vowel.");
+	print(c, " is a vowel.");
 }
 else{
-    print(c, " is a consonant.");
+	print(c, " is a consonant.");
 }
