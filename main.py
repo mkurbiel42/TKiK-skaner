@@ -17,7 +17,7 @@ elif scType == "2":
 
 tokens: List[Token] = scan(toScan, fullLanguage=True)
 
-print("Podaj nazwę pliku do zapisania:")
-outFileName: str = input()
-
-colorizeTokens(tokens, outFileName)
+if scType == "2":
+    print("Podaj nazwę pliku do zapisania:")
+    outFileName: str = input()
+    colorizeTokens(tokens, outFileName)
