@@ -16,15 +16,15 @@ Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje 
 | STRING | \"[^\"]*\" | Ciąg znaków, rozpoczęty i zakończony cudzysłowiem
 | CHAR | '[^']' | Pojedynczy znak, rozpoczęty i zakończony pojedynczym cudzysłowiem
 | ID | [a-zA-Z][a-zA-Z0-9] | Identyfikator składający się z jednej litery na początku a następnie ze znaków alfanumerycznych |
-| PLUS | + | Znak dodawania |
+| PLUS | \\+ | Znak dodawania |
 | MINUS | - | Znak odejmowania |
-| TIMES | * | Znak mnożenia |
-| DIVIDE | / | Znak dzielenia |
+| TIMES | \\* | Znak mnożenia |
+| DIVIDE | \\/ | Znak dzielenia |
 | EQUALS | == | Znak równości |
 | NOTEQUAL | != | Znak nierówności |
 | GREATER_THAN | > | Znak większości |
 | LESS_THAN | < | Znak mniejszości |
-| OR | \|\| | Symbol lub |
+| OR | \\|\\| | Symbol lub |
 | AND | && | Symbol i |
 | NEGATE | ! | Znak negacji |
 | LEFT_BRACKET | \\( | Otwarcie nawiasu |
