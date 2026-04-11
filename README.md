@@ -13,7 +13,7 @@ Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje 
 | **Nazwa** | **Wyrażenie regularne** | **Opis** |
 |---|---|---|
 | INTEGER | [0-9]+ | Liczba całkowita dodatnia, składająca się z samych cyfr |
-| STRING | \"[^\"]*\" | Ciąg znaków, rozpoczęty i zakończony cudzysłowiem
+| STRING | \\"[^\"]*\\" | Ciąg znaków, rozpoczęty i zakończony cudzysłowiem
 | CHAR | '[^']' | Pojedynczy znak, rozpoczęty i zakończony pojedynczym cudzysłowiem
 | ID | [a-zA-Z][a-zA-Z0-9] | Identyfikator składający się z jednej litery na początku a następnie ze znaków alfanumerycznych |
 | PLUS | \\+ | Znak dodawania |
