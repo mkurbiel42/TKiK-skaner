@@ -51,6 +51,7 @@ class LanguageTokenType(Enum):
     PRINT = auto()
     INPUT = auto()
     COMMENT = auto()
+    COMMENT_INCOMPLETE = auto()
     TAB = auto()
     NEWLINE = auto()
     INVALID = auto()

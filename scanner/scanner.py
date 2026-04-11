@@ -25,11 +25,11 @@ languageTokenValidators: dict[LanguageTokenType, Callable[[str], bool]] = {
     LanguageTokenType.TIMES: lambda lit: lit == "*",
     LanguageTokenType.DIVIDE: lambda lit: lit == "/",
     LanguageTokenType.EQUALS: lambda lit: lit == "==",
-    LanguageTokenType.NOTEQUAL: lambda lit: lit == "!=",
-    LanguageTokenType.GREATER_THAN: lambda lit: lit == ">",
+    LanguageTokenType.NOTEQUAL: lambda lit: len(lit)>0 and "!=".startswith(lit),
+    LanguageTokenType.GREATER_THAN: lambda lit: len(lit)>0 and ">".startswith(lit),
     LanguageTokenType.LESS_THAN: lambda lit: lit == "<",
-    LanguageTokenType.OR: lambda lit: lit == "||",
-    LanguageTokenType.AND: lambda lit: lit == "&&",
+    LanguageTokenType.OR: lambda lit: len(lit)>0 and "||".startswith(lit),
+    LanguageTokenType.AND: lambda lit: len(lit)>0 and "&&".startswith(lit),
     LanguageTokenType.NEGATE: lambda lit: lit == "!",
     LanguageTokenType.LEFT_BRACKET: lambda lit: lit == "(",
     LanguageTokenType.RIGHT_BRACKET: lambda lit: lit == ")",
@@ -50,11 +50,21 @@ languageTokenValidators: dict[LanguageTokenType, Callable[[str], bool]] = {
     LanguageTokenType.PRINT: lambda lit: lit == "print",
     LanguageTokenType.INPUT: lambda lit: lit == "input",
     LanguageTokenType.COMMENT: lambda lit: lit.startswith("//") and lit.endswith("\n"),
+    LanguageTokenType.COMMENT_INCOMPLETE: lambda lit: lit.startswith("//") and "\n" not in lit,
     LanguageTokenType.TAB: lambda lit: lit == "\t",
     LanguageTokenType.NEWLINE: lambda lit: lit == "\n",
     LanguageTokenType.ID: lambda lit: len(lit) != 0 and lit[0].isalpha() and (len(lit) == 1 or lit[1:].isalnum()),
     LanguageTokenType.EMPTY: lambda lit: len(lit) == 0
 }
+
+tokensSpaceAllowed: List[LanguageTokenType] = [
+    LanguageTokenType.STRING,
+    LanguageTokenType.STRING_INCOMPLETE,
+    LanguageTokenType.CHAR,
+    LanguageTokenType.CHAR_INCOMPLETE,
+    LanguageTokenType.COMMENT,
+    LanguageTokenType.COMMENT_INCOMPLETE
+]
 
 def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = True, fullLanguage: bool = False) -> List[Token]:
     i: int = 0
@@ -62,21 +72,21 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
     tokens: List[Token] = [] 
 
     while i < len(toScan):
-        print(i, toScan[i])
-        print("\n".join([str(t) for t in tokens]))
+        # print(i, toScan[i])
+        # print("\n".join([str(t) for t in tokens]))
         if toScan[i] == " ":
             if fullyIgnoreWhitespace and i!=len(toScan)-1:
                 i += 1
                 continue
             currentToken = parseToken(currentTokenLiteral, fullLanguage)
-            if isValidToken(currentToken):
-                tokens.append(currentToken)
-                currentTokenLiteral = ""
-            else:
-                print(f"Invalid whitespace at position {i}")
-
-            i += 1
-            continue
+            if currentToken.type not in tokensSpaceAllowed:
+                if isValidToken(currentToken):
+                    if currentToken.type != LanguageTokenType.EMPTY: tokens.append(currentToken)
+                    currentTokenLiteral = ""
+                else:
+                    print(f"Invalid whitespace at position {i}")
+                i += 1
+                continue
         nextChar: str = toScan[i]
         
         resp: ScanResponse = getNextChar(nextChar, currentTokenLiteral, fullLanguage)
@@ -84,11 +94,11 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
         match resp.type:
             case ScanResponseType.VALID_TOKEN_COMPLETE:
                 currentTokenLiteral = resp.nextTokenLiteral
-                tokens.append(resp.token)
+                if currentToken.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
 
             case ScanResponseType.VALID_TOKEN_INCOMPLETE:
                 if i == len(toScan) - 1:
-                    tokens.append(resp.token)
+                    if currentToken.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
                     break
                 currentTokenLiteral = resp.token.value
                 i += 1
