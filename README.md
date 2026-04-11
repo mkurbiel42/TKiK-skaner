@@ -27,16 +27,16 @@ Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje 
 | OR | \|\| | Symbol lub |
 | AND | && | Symbol i |
 | NEGATE | ! | Znak negacji |
-| LEFT_BRACKET | \( | Otwarcie nawiasu |
-| RIGHT_BRACKET | \) | Zamknięcie nawiasu |
-| LEFT_SQUARE_BRACKET | \[ | Otwarcie nawiasu kwadratowego |
-| RIGHT_SQUARE_BRACKET | \] | Zamknięcie nawiasu kwadratowego |
+| LEFT_BRACKET | \\( | Otwarcie nawiasu |
+| RIGHT_BRACKET | \\) | Zamknięcie nawiasu |
+| LEFT_SQUARE_BRACKET | \\[ | Otwarcie nawiasu kwadratowego |
+| RIGHT_SQUARE_BRACKET | \\] | Zamknięcie nawiasu kwadratowego |
 | LEFT_BRACE | { | Otwarcie nawiasu klamrowego |
 | RIGHT_BRACE | } | Zamknięcie nawiasu klamrowego |
 | VARIABLE | var | Słowo kluczowe definiujące zmienną |
 | FUNCTION | function | Słowo kluczowe definiujące funkcję |
 | ASSIGN | = | Znak przypisania |
-| DOT | \. | Kropka |
+| DOT | \\. | Kropka |
 | COMMA | , | Przecinek |
 | SEMICOLON | ; | Średnik |
 | IF | if | Słowo kluczowe instrukcji warunkowej if |
@@ -45,6 +45,6 @@ Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje 
 | WHILE | while | Słowo kluczowe pętli while |
 | PRINT | print | Słowo kluczowe instrukcji print do wypisywania danych |
 | INPUT | input | Słowo kluczowe instrukcji input do pobierania danych |
-| COMMENT | \/\/[^\/\n]*\n | Komentarz |
+| COMMENT | \\/\\/[^\/\n]*\n | Komentarz |
 | TAB | \t | Znak tabulacji |
 | NEWLINE | \n | Znak nowej linii |
