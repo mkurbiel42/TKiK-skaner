@@ -7,16 +7,17 @@ from typing import List
 
 scType = input("Wybierz rodzaj skanera: 1 - wyrażenie matematyczne, 2 - własny język: ")
 
+tokens: List[any] = None
 toScan: str
 if scType == "1":
     print("Podaj wyrażenie do zeskanowania: ")
     toScan: str = input()
-    tokens: List[Token] = scan(toScan, fullLanguage=True)
+    tokens = scan(toScan)
 elif scType == "2":
     print("Podaj nazwę pliku do zeskanowania: ")
     with open(input(), 'r') as f:
         toScan: str = f.read()
-    tokens: List[LanguageToken] = scan_l(toScan, fullLanguage=True)
+    tokens = scan_l(toScan)
 
 if scType == "2":
     print("Podaj nazwę pliku do zapisania:")

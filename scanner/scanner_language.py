@@ -54,14 +54,14 @@ tokensSpaceAllowed: List[LanguageTokenType] = [
     LanguageTokenType.COMMENT_INCOMPLETE
 ]
 
-def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = True, fullLanguage: bool = False) -> List[LanguageToken]:
+def scan(toScan: str, printTokens: bool = True) -> List[LanguageToken]:
     i: int = 0
     currentTokenLiteral: str = ""
     tokens: List[LanguageToken] = [] 
 
     while i < len(toScan):
         if toScan[i] == " ":
-            currentToken = parseToken(currentTokenLiteral, fullLanguage)
+            currentToken = parseToken(currentTokenLiteral)
             if currentToken.type not in tokensSpaceAllowed:
                 if isValidToken(currentToken):
                     if currentToken.type != LanguageTokenType.EMPTY: tokens.append(currentToken)
@@ -72,7 +72,7 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
                 continue
         nextChar: str = toScan[i]
         
-        resp: ScanResponse = getNextChar(nextChar, currentTokenLiteral, fullLanguage)
+        resp: ScanResponse = getNextChar(nextChar, currentTokenLiteral)
 
         match resp.type:
             case ScanResponseType.VALID_TOKEN_COMPLETE:
@@ -88,7 +88,7 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
 
             case ScanResponseType.INVALID:
                 print(f"Invalid char {nextChar} at position {i}")
-                return
+                exit()
 
             case _:
                 print("Something horrible happened")
@@ -97,14 +97,14 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
     return tokens
         
 
-def getNextChar(char: str, currentTokenLiteral: str, fullLanguage: bool) -> ScanResponse:
+def getNextChar(char: str, currentTokenLiteral: str) -> ScanResponse:
     extendedTokenLiteral = currentTokenLiteral + char
-    extendedToken = parseToken(extendedTokenLiteral, fullLanguage)
+    extendedToken = parseToken(extendedTokenLiteral)
 
     if isValidToken(extendedToken):
         return ScanResponse(ScanResponseType.VALID_TOKEN_INCOMPLETE, extendedToken, None)
     
-    currentToken = parseToken(currentTokenLiteral, fullLanguage)
+    currentToken = parseToken(currentTokenLiteral)
 
     if not isValidToken(extendedToken) and isValidToken(currentToken) and currentToken.type != LanguageTokenType.EMPTY:
         return ScanResponse(ScanResponseType.VALID_TOKEN_COMPLETE, currentToken, "")
