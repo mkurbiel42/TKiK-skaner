@@ -45,6 +45,6 @@ Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje 
 | WHILE | while | Słowo kluczowe pętli while |
 | PRINT | print | Słowo kluczowe instrukcji print do wypisywania danych |
 | INPUT | input | Słowo kluczowe instrukcji input do pobierania danych |
-| COMMENT | \\/\\/[^\/\n]*\n | Komentarz |
+| COMMENT | \\/\\/[^\n]*\n | Komentarz |
 | TAB | \t | Znak tabulacji |
 | NEWLINE | \n | Znak nowej linii |
