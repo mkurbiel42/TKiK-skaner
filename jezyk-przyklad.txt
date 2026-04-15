@@ -32,4 +32,4 @@ function testFunc(arg1, arg2){
 			}
 		}
 	}
-}
+} // end of example file
