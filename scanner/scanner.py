@@ -26,10 +26,14 @@ languageTokenValidators: dict[LanguageTokenType, Callable[[str], bool]] = {
     LanguageTokenType.DIVIDE: lambda lit: lit == "/",
     LanguageTokenType.EQUALS: lambda lit: lit == "==",
     LanguageTokenType.NOTEQUAL: lambda lit: len(lit)>0 and "!=".startswith(lit),
-    LanguageTokenType.GREATER_THAN: lambda lit: len(lit)>0 and ">".startswith(lit),
+    LanguageTokenType.GREATER_THAN: lambda lit: lit == ">",
     LanguageTokenType.LESS_THAN: lambda lit: lit == "<",
-    LanguageTokenType.OR: lambda lit: len(lit)>0 and "||".startswith(lit),
-    LanguageTokenType.AND: lambda lit: len(lit)>0 and "&&".startswith(lit),
+    # LanguageTokenType.OR: lambda lit: len(lit)>0 and "||".startswith(lit),
+    LanguageTokenType.OR: lambda lit: lit == "||",
+    LanguageTokenType.OR_INCOMPLETE: lambda lit: lit == "|",
+    # LanguageTokenType.AND: lambda lit: len(lit)>0 and "&&".startswith(lit),
+    LanguageTokenType.AND: lambda lit: lit == "&&",
+    LanguageTokenType.AND_INCOMPLETE: lambda lit: lit == "&",
     LanguageTokenType.NEGATE: lambda lit: lit == "!",
     LanguageTokenType.LEFT_BRACKET: lambda lit: lit == "(",
     LanguageTokenType.RIGHT_BRACKET: lambda lit: lit == ")",
@@ -54,7 +58,7 @@ languageTokenValidators: dict[LanguageTokenType, Callable[[str], bool]] = {
     LanguageTokenType.TAB: lambda lit: lit == "\t",
     LanguageTokenType.NEWLINE: lambda lit: lit == "\n",
     LanguageTokenType.ID: lambda lit: len(lit) != 0 and lit[0].isalpha() and (len(lit) == 1 or lit[1:].isalnum()),
-    LanguageTokenType.EMPTY: lambda lit: len(lit) == 0
+    # LanguageTokenType.EMPTY: lambda lit: len(lit) == 0
 }
 
 tokensSpaceAllowed: List[LanguageTokenType] = [
@@ -65,15 +69,24 @@ tokensSpaceAllowed: List[LanguageTokenType] = [
     LanguageTokenType.COMMENT,
     LanguageTokenType.COMMENT_INCOMPLETE
 ]
+incompleteTokens: List[LanguageTokenType] = [
+    LanguageTokenType.STRING_INCOMPLETE,
+    LanguageTokenType.CHAR_INCOMPLETE,
+    LanguageTokenType.COMMENT_INCOMPLETE,
+    LanguageTokenType.OR_INCOMPLETE,
+    LanguageTokenType.AND_INCOMPLETE,
+]
 
 def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = True, fullLanguage: bool = False) -> List[Token]:
     i: int = 0
     currentTokenLiteral: str = ""
     tokens: List[Token] = [] 
 
+    if not toScan.endswith("\n"): toScan += "\n"
     while i < len(toScan):
-        # print(i, toScan[i])
+        # print(i, f"'{currentTokenLiteral}'", f"'{toScan[i]}'")
         # print("\n".join([str(t) for t in tokens]))
+        # if i==169: exit()
         if toScan[i] == " ":
             if fullyIgnoreWhitespace and i!=len(toScan)-1:
                 i += 1
@@ -81,9 +94,12 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
             currentToken = parseToken(currentTokenLiteral, fullLanguage)
             if currentToken.type not in tokensSpaceAllowed:
                 if isValidToken(currentToken):
+                    if currentToken.type in incompleteTokens:
+                        print(f"Invalid token {currentToken.value} at position {i-len(currentToken.value)}")
+                        exit()
                     if currentToken.type != LanguageTokenType.EMPTY: tokens.append(currentToken)
                     currentTokenLiteral = ""
-                else:
+                elif len(currentTokenLiteral) > 0:
                     print(f"Invalid whitespace at position {i}")
                 i += 1
                 continue
@@ -94,18 +110,24 @@ def scan(toScan: str, fullyIgnoreWhitespace: bool = False, printTokens: bool = T
         match resp.type:
             case ScanResponseType.VALID_TOKEN_COMPLETE:
                 currentTokenLiteral = resp.nextTokenLiteral
-                if currentToken.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
+                if resp.token.type in incompleteTokens:
+                    print(f"Invalid token {resp.token.value} at position {i-len(resp.token.value)}")
+                    exit()
+                if resp.token.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
 
             case ScanResponseType.VALID_TOKEN_INCOMPLETE:
                 if i == len(toScan) - 1:
-                    if currentToken.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
+                    if resp.token.type in incompleteTokens:
+                        print(f"Invalid token {resp.token.value} at position {i-len(resp.token.value)}")
+                        exit()
+                    if resp.token.type != LanguageTokenType.EMPTY: tokens.append(resp.token)
                     break
                 currentTokenLiteral = resp.token.value
                 i += 1
 
             case ScanResponseType.INVALID:
                 print(f"Invalid char {nextChar} at position {i}")
-                return
+                exit()
 
             case _:
                 print("Something horrible happened")
@@ -126,15 +148,14 @@ def getNextChar(char: str, currentTokenLiteral: str, fullLanguage: bool) -> Scan
     if not isValidToken(extendedToken) and isValidToken(currentToken) and currentToken.type != TokenType.EMPTY:
         return ScanResponse(ScanResponseType.VALID_TOKEN_COMPLETE, currentToken, "")
     
-    if not isValidToken(extendedToken) and currentToken.type == TokenType.EMPTY:
-        return ScanResponse(ScanResponseType.INVALID, None, None)
+    # if not isValidToken(extendedToken) and currentToken.type == TokenType.EMPTY:
+    return ScanResponse(ScanResponseType.INVALID, None, None)
         
 def isValidToken(token: Token) -> bool:
-    return token.type != TokenType.INVALID
+    return token.type != TokenType.INVALID and token.type != LanguageTokenType.INVALID
 
 def parseToken(tokenLiteral: str, fullLanguage: bool) -> Token:
     for type, validator in (languageTokenValidators if fullLanguage else tokenValidators).items():
         if(validator(tokenLiteral)):
             return Token(type, tokenLiteral)
-
-    return Token(TokenType.INVALID, tokenLiteral)
+    return Token((LanguageTokenType if fullLanguage else TokenType).INVALID, tokenLiteral)
