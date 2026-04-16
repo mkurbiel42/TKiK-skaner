@@ -6,7 +6,7 @@ Skaner tokenów dla prostych wyrażeń matematycznych oraz własnego uproszczone
 
 `uv run main.py`
 
-W przypadku wyrażenia matematycznego wyrażenie do zeskanowania podawane jest przez standard input, w przypadku uproszczonego języka wyrażenie pobierane jest z pliku podanego przez użytkownika. Program wypisuje wszystkie tokeny w formacie `"[KOD]: [WARTOŚĆ]"` i zapisuje pokolorowaną składnię do podanego pliku w formacie html
+W przypadku wyrażenia matematycznego wyrażenie do zeskanowania podawane jest przez standard input, w przypadku uproszczonego języka wyrażenie pobierane jest z pliku podanego przez użytkownika. Program wypisuje wszystkie tokeny w formacie `"[KOD]: [WARTOŚĆ]"` i zapisuje pokolorowaną składnię do podanego pliku w formacie HTML
 
 ## Tokeny
 
