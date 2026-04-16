@@ -1,12 +1,12 @@
 # TKiK-skaner
 
-Skaner tokenów dla prostych wyrażeń matematycznych napisany w Python
+Skaner tokenów dla prostych wyrażeń matematycznych oraz własnego uproszczonego języka programowania z kolorowaniem składni napisany w Python
 
 Żeby uruchomić program należy użyć uv
 
 `uv run main.py`
 
-Wyrażenie do zeskanowania podawane jest przez standard input. Program wypisuje wszystkie tokeny w formacie `"[KOD]: [WARTOŚĆ]"`
+W przypadku wyrażenia matematycznego wyrażenie do zeskanowania podawane jest przez standard input, w przypadku uproszczonego języka wyrażenie pobierane jest z pliku podanego przez użytkownika. Program wypisuje wszystkie tokeny w formacie `"[KOD]: [WARTOŚĆ]"` i zapisuje pokolorowaną składnię do podanego pliku w formacie html
 
 ## Tokeny
 
